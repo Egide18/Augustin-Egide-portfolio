@@ -5,6 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Moderne</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            .burger {
+                display: none;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 200;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 0.5rem;
+                width: 48px;
+                height: 48px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+            .burger span {
+                display: block;
+                width: 28px;
+                height: 4px;
+                margin: 5px auto;
+                background: white;
+                border-radius: 2px;
+                transition: all 0.3s;
+            }
+            @media (max-width: 768px) {
+                .burger {
+                    display: flex;
+                }
+                .sidebar {
+                    left: 0;
+                    top: 0;
+                    width: 220px;
+                    height: 100vh;
+                    transform: translateX(-100%);
+                    transition: transform 0.3s;
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .sidebar-content {
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                }
+                .nav-item {
+                    justify-content: center;
+                    text-align: center;
+                }
+                .main-content {
+                    margin-left: 0;
+                }
+            }
+            .sidebar-bg {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0,0,0,0.3);
+                z-index: 150;
+            }
+            .sidebar-bg.open {
+                display: block;
+            }
+        </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -253,8 +321,15 @@
     </script>
 </head>
 <body class="font-inter bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-white">
+    <!-- Bouton Burger Mobile -->
+    <div class="burger" id="burgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="sidebar-bg" id="sidebarBg"></div>
     <!-- Navigation Latérale -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebarNav">
         <div class="sidebar-content">
             <div class="space-y-2">
                 <a href="#home" class="nav-item">
@@ -802,5 +877,26 @@
 
         skillBars.forEach(bar => skillObserver.observe(bar));
     </script>
+        <script>
+        // Menu burger mobile
+        const burger = document.getElementById('burgerMenu');
+        const sidebar = document.getElementById('sidebarNav');
+        const sidebarBg = document.getElementById('sidebarBg');
+        burger.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            sidebarBg.classList.toggle('open');
+        });
+        sidebarBg.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            sidebarBg.classList.remove('open');
+        });
+        // Fermer le menu au clic sur un lien
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                sidebarBg.classList.remove('open');
+            });
+        });
+        </script>
 </body>
 </html>
